@@ -1,16 +1,35 @@
 import React from 'react';
-import { Paragraph } from '@contentful/f36-components';
-import { /* useCMA, */ useSDK } from '@contentful/react-apps-toolkit';
+import { Button, Note } from '@contentful/f36-components';
+import { /* useCMA, */ useAutoResizer, useSDK } from '@contentful/react-apps-toolkit';
 
 const Sidebar = () => {
   const sdk = useSDK();
-  /*
-     To use the cma, inject it as follows.
-     If it is not needed, you can remove the next line.
-  */
-  // const cma = useCMA();
+  const PREVIEW_TOKEN = sdk.parameters.installation.apiKey;
+  useAutoResizer();
 
-  return <Paragraph>Hello Sidebar Component (AppId: {sdk.ids.app})</Paragraph>;
+  const openGQLPlayground = () =>
+    sdk.dialogs.openCurrentApp({
+      width: "fullWidth",
+      minHeight: "900px",
+      shouldCloseOnOverlayClick: true,
+      shouldCloseOnEscapePress: true,
+      parameters: {
+        entry: sdk.entry.getSys(),
+      },
+    });
+
+  return PREVIEW_TOKEN ? 
+  (
+    <Button onClick={openGQLPlayground} style={{ width: "100%" }}>
+      Open GQL Playground
+    </Button>
+  ) : 
+  (
+    <Note noteType="warning">
+      To use GraphQL playground. Please define the CPA installation parameter in
+      your app configuration.
+    </Note>
+  );
 };
 
 export default Sidebar;

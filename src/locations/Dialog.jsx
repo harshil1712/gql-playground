@@ -1,16 +1,15 @@
 import React from 'react';
-import { Paragraph } from '@contentful/f36-components';
 import { /* useCMA, */ useSDK } from '@contentful/react-apps-toolkit';
+import Playground from '../components/Playground';
 
 const Dialog = () => {
   const sdk = useSDK();
-  /*
-     To use the cma, inject it as follows.
-     If it is not needed, you can remove the next line.
-  */
-  // const cma = useCMA();
+  const { parameters } = sdk;
+  const entry = parameters.invocation.entry;
 
-  return <Paragraph>Hello Dialog Component (AppId: {sdk.ids.app})</Paragraph>;
+  return <div style={{height: '100vh'}}>
+  <Playground entry={entry} />
+</div>;
 };
 
 export default Dialog;

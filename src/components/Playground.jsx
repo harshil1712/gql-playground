@@ -4,6 +4,7 @@ import GraphiQL from 'graphiql';
 import 'graphiql/graphiql.css';
 import { useExplorerPlugin } from '@graphiql/plugin-explorer';
 import { useSDK } from '@contentful/react-apps-toolkit';
+import { useEffect } from 'react';
 
 const Playground = ({entry}) => {
     const sdk = useSDK();
@@ -17,51 +18,58 @@ const Playground = ({entry}) => {
             "Authorization": `Bearer ${PREVIEW_TOKEN}`
         }
     });
-  
     const [query, setQuery] = useState('');
+    const [tabQueries, setTabQueries] = useState([{
+      query: `query {# add your query}`
+  }])
+
+    useEffect(()=>{
+      if(entry) {
+        console.log(entry)
+        setTabQueries([
+          {
+              query: `
+                  query ${entry.contentType.sys.id}EntryQuery {
+                      ${entry.contentType.sys.id}(id: "${entry.id}") {
+                          sys {
+                              id
+                          }
+                          # add the fields you want to query
+                      }
+                  }
+              `
+          },
+          {
+              query: `
+              query ${entry.contentType.sys.id}CollectionQuery {
+                ${entry.contentType.sys.id}Collection {
+                  items {
+                    sys {
+                      id
+                    }
+                    # add the fields you want to query
+                  }
+                }
+              }`
+          }
+      ])
+      }
+      setQuery(tabQueries[0].query)
+      console.log(tabQueries)
+    },[])
+  
     const explorerPlugin = useExplorerPlugin({
         query,
         onEdit: setQuery,
     });
-
-    // const tabs = entry ? [
-    //     {
-    //         query: `
-    //             query ${entry.contentType.sys.id}EntryQuery {
-    //                 ${entry.contentType.sys.id}(id: "${entry.id}") {
-    //                     sys {
-    //                         id
-    //                     }
-    //                     # add the fields you want to query
-    //                 }
-    //             }
-    //         `
-    //     },
-    //     {
-    //         query: `
-    //         query ${entry.contentType.sys.id}CollectionQuery {
-    //           ${entry.contentType.sys.id}Collection {
-    //             items {
-    //               sys {
-    //                 id
-    //               }
-    //               # add the fields you want to query
-    //             }
-    //           }
-    //         }`
-    //     }
-    // ] : [
-    //     {
-    //         query: `query {# add your query}`
-    //     }
-    // ]
     return(
         <GraphiQL 
           fetcher={fetcher} 
           onEditQuery={setQuery}
           query={query}
           plugins={[explorerPlugin]}
-          // defaultTabs={tabs}
+          onTabChange={(e)=>{setQuery(e.tabs[e.activeTabIndex].query)}}
+          defaultTabs={tabQueries}
         >
           <GraphiQL.Logo>
               <div style={{ display: 'flex', alignItems: 'center' }}>

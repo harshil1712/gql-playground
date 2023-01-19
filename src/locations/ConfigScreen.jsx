@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Form, Flex, FormControl, TextInput } from '@contentful/f36-components';
+import { Card, TextField, TextLink, Paragraph, Note, Tabs, Tab, Form, Flex, FormControl, TextInput } from '@contentful/f36-components';
 import { css } from 'emotion';
 import { /* useCMA, */ useSDK } from '@contentful/react-apps-toolkit';
 
@@ -50,18 +50,73 @@ const ConfigScreen = () => {
   }, [sdk]);
 
   return (
-    <Flex flexDirection="column" className={css({ margin: '80px', maxWidth: '800px' })}>
-      <Form>
-      <FormControl>
-        <FormControl.Label>Contentful Preview API Token</FormControl.Label>
-        <TextInput
+    <Card style={{ maxWidth: "38em", margin: "3em auto" }}>
+    <Tabs defaultTab='configuration'>
+      <Tabs.List>
+      <Tabs.Tab panelId="configuration">Configuration</Tabs.Tab>
+      <Tabs.Tab panelId="sidebar">Sidebar</Tabs.Tab>
+      <Tabs.Tab panelId="feedback">Feedback</Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel id='configuration' style={{padding: '1em'}}>
+      <Paragraph>
+          The GraphQL Playground app enables developers and content creators to write GraphQL queries right next to their content.
+        </Paragraph>
+        <Form>
+          <Paragraph style={{ marginTop: "1em" }}>
+            <TextLink
+              href={`https://app.contentful.com/spaces/${sdk.ids.space}/api/keys`}
+              target="_blank"
+              rel="noopener"
+            >
+              Create a new pair of API keys
+            </TextLink>{" "}
+            and save the Content Preview API token below:
+          </Paragraph>
+          <TextInput
           value={parameters.apiKey}
           type='text'
           onChange={(e) => setParameters({...parameters, apiKey:e.target.value})}
         />
-        </FormControl>
-      </Form>
-    </Flex>
+        <Note style={{marginTop:"1em"}}>
+            The CPA (Content Preview API) token allows you to also access
+            preview data when using GraphQL playground.
+          </Note>
+        </Form>
+      </Tabs.Panel>
+      <Tabs.Panel id='sidebar' style={{padding: '1em'}}>
+      <Paragraph>
+          To enable GraphQL playground in the content entry sidebar head over to
+          the content model section and select the GraphQL Playground widget. It
+          will be available only if you configure and install the application
+          correctly.
+        </Paragraph>
+        <Note style={{ marginTop: "1em" }}>
+          You can learn more about the sidebar location{" "}
+          <TextLink
+            href="https://www.contentful.com/developers/docs/extensibility/app-framework/locations/#entry-sidebar"
+            target="blank"
+            rel="noopener"
+          >
+            in the documentation
+          </TextLink>
+          .
+        </Note>
+      </Tabs.Panel>
+      <Tabs.Panel id='feedback' style={{padding: '1em'}}>
+      <Paragraph>
+          If you have any feedback don't hesitate to{" "}
+          <TextLink
+            href="https://github.com/harshil1712/contentful-gql-playground"
+            target="_blank"
+            rel="noopener"
+          >
+            open an issue on GitHub
+          </TextLink>
+          . We're open for contributions, too. 🙈
+        </Paragraph>
+      </Tabs.Panel>
+    </Tabs>
+    </Card>
   );
 };
 export default ConfigScreen;

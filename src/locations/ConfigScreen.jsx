@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Card, TextField, TextLink, Paragraph, Note, Tabs, Tab, Form, Flex, FormControl, TextInput } from '@contentful/f36-components';
-import { css } from 'emotion';
+import { Card, TextLink, Paragraph, Note, Tabs, Form, TextInput } from '@contentful/f36-components';
 import { /* useCMA, */ useSDK } from '@contentful/react-apps-toolkit';
 
 const ConfigScreen = () => {

@@ -4,7 +4,6 @@ import GraphiQL from 'graphiql';
 import 'graphiql/graphiql.css';
 import { useExplorerPlugin } from '@graphiql/plugin-explorer';
 import { useSDK } from '@contentful/react-apps-toolkit';
-import { useEffect } from 'react';
 
 const Playground = ({queries}) => {
     const sdk = useSDK();
@@ -19,7 +18,7 @@ const Playground = ({queries}) => {
         }
     });
     const [query, setQuery] = useState();
-    const [tabQueries, setTabQueries] = useState(queries)
+    const [tabQueries] = useState(queries)
   
     const explorerPlugin = useExplorerPlugin({
         query,

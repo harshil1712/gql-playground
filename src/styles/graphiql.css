@@ -1,0 +1,12 @@
+.graphiql-plugin>.docExplorerWrap {
+    overflow-y: scroll !important;
+}
+
+.graphiql-plugin>.docExplorerWrap>.doc-explorer-contents>.graphiql-explorer-root>div::-webkit-scrollbar {
+    display: none;
+}
+
+.graphiql-plugin>.docExplorerWrap>.doc-explorer-contents>.graphiql-explorer-root>div {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
